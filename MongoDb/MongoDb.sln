@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{69F7A075-A650-49F3-A3CF-568A0ED39476}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDb.Application", "MongoDb.Application\MongoDb.Application.csproj", "{B3B4E30E-5BA6-4844-95C3-BF4297ABC689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDb.Data", "MongoDb.Data\MongoDb.Data.csproj", "{1DA68E8E-4A55-4907-89A0-A8A812041CB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDb.Domain", "MongoDb.Domain\MongoDb.Domain.csproj", "{2F638EEC-586E-41FE-976A-597E42624BA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDb.Service", "MongoDb.Service\MongoDb.Service.csproj", "{7184A2DB-F9C9-4E48-BC5C-0DEB8DF5924D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69F7A075-A650-49F3-A3CF-568A0ED39476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69F7A075-A650-49F3-A3CF-568A0ED39476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69F7A075-A650-49F3-A3CF-568A0ED39476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69F7A075-A650-49F3-A3CF-568A0ED39476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3B4E30E-5BA6-4844-95C3-BF4297ABC689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3B4E30E-5BA6-4844-95C3-BF4297ABC689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3B4E30E-5BA6-4844-95C3-BF4297ABC689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3B4E30E-5BA6-4844-95C3-BF4297ABC689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA68E8E-4A55-4907-89A0-A8A812041CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA68E8E-4A55-4907-89A0-A8A812041CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA68E8E-4A55-4907-89A0-A8A812041CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA68E8E-4A55-4907-89A0-A8A812041CB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F638EEC-586E-41FE-976A-597E42624BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F638EEC-586E-41FE-976A-597E42624BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F638EEC-586E-41FE-976A-597E42624BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F638EEC-586E-41FE-976A-597E42624BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7184A2DB-F9C9-4E48-BC5C-0DEB8DF5924D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7184A2DB-F9C9-4E48-BC5C-0DEB8DF5924D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7184A2DB-F9C9-4E48-BC5C-0DEB8DF5924D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7184A2DB-F9C9-4E48-BC5C-0DEB8DF5924D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CB5DF0A-7380-412B-8008-590795565A47}
+	EndGlobalSection
+EndGlobal

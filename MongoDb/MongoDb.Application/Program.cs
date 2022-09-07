@@ -1,8 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 using MongoDb.Data.Context;
-using MongoDb.Data.Repositories;
 using MongoDb.Domain.Configurations;
-using MongoDb.Domain.Interfaces.Repositories;
 using MongoDb.Domain.Interfaces.Services;
 using MongoDb.Service.Services;
 

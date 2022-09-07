@@ -35,7 +35,8 @@ namespace MongoDb.Data.Repositories
 
         public async Task UpdateAsync(T obj)
         {
-            await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", obj.Id), obj);
+            var filter = Builders<T>.Filter.Where(x => x.Id == obj.Id);
+            await _collection.ReplaceOneAsync(filter, obj);
         }
     }
 }

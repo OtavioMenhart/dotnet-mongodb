@@ -43,7 +43,7 @@ namespace MongoDb.Application.Controllers
                 var book = await _bookService.GetBookByIdAsync(bookId);
                 return Ok(book);
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 return NoContent();
             }
@@ -61,7 +61,7 @@ namespace MongoDb.Application.Controllers
                 var books = _bookService.GetAllBooksAsync();
                 return Ok(books);
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 return NoContent();
             }
@@ -79,7 +79,7 @@ namespace MongoDb.Application.Controllers
                 await _bookService.DeleteBookAsync(bookId);
                 return Ok();
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 return NoContent();
             }
@@ -97,7 +97,7 @@ namespace MongoDb.Application.Controllers
                 await _bookService.UpdateBookAsync(bookId, bookUpdate);
                 return Ok();
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 return NoContent();
             }

@@ -1,5 +1,4 @@
-﻿using MongoDb.Domain.Dto;
-using MongoDb.Domain.Entities;
+﻿using MongoDb.Domain.Entities;
 using MongoDb.Domain.Interfaces.Repositories;
 using MongoDB.Driver;
 
@@ -16,36 +15,19 @@ namespace MongoDb.Data.Repositories
             return await GetSingleAsync(x => x.Id == bookId);
         }
 
-        public async Task CreateBookAsync(CreateOrUpdateBookDto model)
+        public async Task CreateBookAsync(Book book)
         {
-            Book book = new Book
-            {
-                Name = model.Name,
-                AuthorName = model.AuthorName,
-                Description = model.Description,
-                Price = model.Price
-            };
-
             await AddAsync(book);
         }
 
-        public async Task UpdateBookAsync(string id, CreateOrUpdateBookDto model)
+        public async Task UpdateBookAsync(string bookId, Book book)
         {
-            Book book = new Book
-            {
-                Id = id,
-                Name = model.Name,
-                AuthorName = model.AuthorName,
-                Description = model.Description,
-                Price = model.Price
-            };
-
             await UpdateAsync(book);
         }
 
-        public async Task DeleteBookAsync(string id)
+        public async Task DeleteBookAsync(string bookId)
         {
-            await DeleteAsync(x => x.Id == id);
+            await DeleteAsync(x => x.Id == bookId);
         }
     }
 }

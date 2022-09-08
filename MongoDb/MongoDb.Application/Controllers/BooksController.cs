@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDb.Domain.Dto;
-using MongoDb.Domain.Interfaces.Repositories;
 using MongoDb.Domain.Interfaces.Services;
 using System.Net;
 
@@ -10,13 +9,11 @@ namespace MongoDb.Application.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IDataService _dataService;
-        private readonly IBookRepository _bookRepository;
+        private readonly IBookService _bookService;
 
-        public BooksController(IDataService dataService)
+        public BooksController(IBookService bookService)
         {
-            _dataService = dataService;
-            _bookRepository = _dataService.Book;
+            _bookService = bookService;
         }
 
         [HttpPost]
@@ -24,7 +21,7 @@ namespace MongoDb.Application.Controllers
         {
             try
             {
-                await _bookRepository.CreateBookAsync(book);
+                await _bookService.CreateBookAsync(book);
                 return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -38,11 +35,12 @@ namespace MongoDb.Application.Controllers
         {
             try
             {
-                var book = await _bookRepository.GetBookByIdAsync(bookId);
-                if (book == null)
-                    return NoContent();
-
+                var book = await _bookService.GetBookByIdAsync(bookId);
                 return Ok(book);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -55,11 +53,12 @@ namespace MongoDb.Application.Controllers
         {
             try
             {
-                var books = _bookRepository.GetAll();
-                if (books.Count() == 0)
-                    return NoContent();
-
+                var books = _bookService.GetAllBooksAsync();
                 return Ok(books);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -72,12 +71,12 @@ namespace MongoDb.Application.Controllers
         {
             try
             {
-                var book = await _bookRepository.GetBookByIdAsync(bookId);
-                if (book == null)
-                    return NoContent();
-
-                await _bookRepository.DeleteBookAsync(book.Id);
+                await _bookService.DeleteBookAsync(bookId);
                 return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -90,12 +89,12 @@ namespace MongoDb.Application.Controllers
         {
             try
             {
-                var book = await _bookRepository.GetBookByIdAsync(bookId);
-                if (book == null)
-                    return NoContent();
-
-                await _bookRepository.UpdateBookAsync(bookId, bookUpdate);
+                await _bookService.UpdateBookAsync(bookId, bookUpdate);
                 return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {

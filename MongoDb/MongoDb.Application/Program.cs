@@ -18,6 +18,8 @@ builder.Services.AddSingleton<MongoDbContext>();
 
 builder.Services.AddScoped<IDataService, DataService>();
 
+builder.Services.AddTransient<IBookService, BookService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

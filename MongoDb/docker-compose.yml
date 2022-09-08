@@ -38,6 +38,7 @@ services:
     environment:
       - "MongoConnection__ConnectionString=mongodb://mydb:27017"
       - "MongoConnection__DatabaseName=BookstoreDb"
+      - "ElasticConfigurationUri=http://localhost:9200"
     ports:
       - "5000:5000"
       - "5001:5001"

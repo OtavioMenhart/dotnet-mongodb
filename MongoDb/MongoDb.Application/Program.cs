@@ -1,10 +1,12 @@
 using FluentValidation;
+using MongoDb.Application.Configurations;
 using MongoDb.Data.Context;
 using MongoDb.Domain.Configurations;
 using MongoDb.Domain.Dto;
 using MongoDb.Domain.Interfaces.Services;
 using MongoDb.Service.Services;
 using MongoDb.Service.Validator;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,9 @@ builder.Services.AddSingleton<IValidator<CreateOrUpdateBookDto>, CreateOrUpdateB
 
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddTransient<IBookService, BookService>();
+
+LogConfiguration.ConfigureLogging();
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

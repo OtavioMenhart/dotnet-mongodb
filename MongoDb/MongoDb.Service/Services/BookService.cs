@@ -3,6 +3,7 @@ using MongoDb.Domain.Dto;
 using MongoDb.Domain.Entities;
 using MongoDb.Domain.Interfaces.Repositories;
 using MongoDb.Domain.Interfaces.Services;
+using Serilog;
 
 namespace MongoDb.Service.Services
 {
@@ -57,6 +58,7 @@ namespace MongoDb.Service.Services
             if (book == null)
                 throw new KeyNotFoundException($"Book is null - id: {bookId}");
 
+            Log.Information($"Book Id found", book);
             return book;
         }
 

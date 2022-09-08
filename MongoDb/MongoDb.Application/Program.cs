@@ -1,7 +1,10 @@
+using FluentValidation;
 using MongoDb.Data.Context;
 using MongoDb.Domain.Configurations;
+using MongoDb.Domain.Dto;
 using MongoDb.Domain.Interfaces.Services;
 using MongoDb.Service.Services;
+using MongoDb.Service.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +19,9 @@ builder.Services.Configure<DatabaseSettings>(
 
 builder.Services.AddSingleton<MongoDbContext>();
 
-builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddSingleton<IValidator<CreateOrUpdateBookDto>, CreateOrUpdateBookDtoValidator>();
 
+builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddTransient<IBookService, BookService>();
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
-﻿using MongoDb.Domain.Dto;
+﻿using FluentValidation;
+using MongoDb.Domain.Dto;
 using MongoDb.Domain.Entities;
 using MongoDb.Domain.Interfaces.Repositories;
 using MongoDb.Domain.Interfaces.Services;
@@ -8,16 +9,20 @@ namespace MongoDb.Service.Services
     public class BookService : IBookService
     {
         private readonly IDataService _dataService;
+        private readonly IValidator<CreateOrUpdateBookDto> _validator;
         private readonly IBookRepository _bookRepository;
 
-        public BookService(IDataService dataService)
+        public BookService(IDataService dataService, IValidator<CreateOrUpdateBookDto> validator)
         {
             _dataService = dataService;
             _bookRepository = _dataService.Book;
+            _validator = validator;
         }
 
         public async Task CreateBookAsync(CreateOrUpdateBookDto model)
         {
+            await _validator.ValidateAndThrowAsync(model);
+
             Book book = new Book
             {
                 Name = model.Name,
@@ -50,7 +55,7 @@ namespace MongoDb.Service.Services
         {
             var book = await _bookRepository.GetBookByIdAsync(bookId);
             if (book == null)
-                throw new KeyNotFoundException($"Book is null - id: {bookId}"); ;
+                throw new KeyNotFoundException($"Book is null - id: {bookId}");
 
             return book;
         }
@@ -59,7 +64,9 @@ namespace MongoDb.Service.Services
         {
             var book = await _bookRepository.GetBookByIdAsync(bookId);
             if (book == null)
-                throw new KeyNotFoundException($"Book is null - id: {bookId}"); ;
+                throw new KeyNotFoundException($"Book is null - id: {bookId}");
+
+            await _validator.ValidateAndThrowAsync(model);
 
             Book bookUpdate = new Book
             {

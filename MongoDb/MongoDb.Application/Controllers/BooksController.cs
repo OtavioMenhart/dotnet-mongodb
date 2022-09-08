@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using MongoDb.Domain.Dto;
 using MongoDb.Domain.Interfaces.Services;
 using System.Net;
@@ -23,6 +24,10 @@ namespace MongoDb.Application.Controllers
             {
                 await _bookService.CreateBookAsync(book);
                 return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -95,6 +100,10 @@ namespace MongoDb.Application.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

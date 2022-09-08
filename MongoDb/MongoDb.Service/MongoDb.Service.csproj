@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MongoDb.Data\MongoDb.Data.csproj" />
     <ProjectReference Include="..\MongoDb.Domain\MongoDb.Domain.csproj" />
   </ItemGroup>

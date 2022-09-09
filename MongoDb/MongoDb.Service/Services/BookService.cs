@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Logging;
 using MongoDb.Domain.Dto;
 using MongoDb.Domain.Entities;
 using MongoDb.Domain.Interfaces.Repositories;
 using MongoDb.Domain.Interfaces.Services;
-using Serilog;
 
 namespace MongoDb.Service.Services
 {
@@ -11,18 +11,26 @@ namespace MongoDb.Service.Services
     {
         private readonly IDataService _dataService;
         private readonly IValidator<CreateOrUpdateBookDto> _validator;
+        private ILogger<BookService> _logger;
         private readonly IBookRepository _bookRepository;
 
-        public BookService(IDataService dataService, IValidator<CreateOrUpdateBookDto> validator)
+        public BookService(IDataService dataService, IValidator<CreateOrUpdateBookDto> validator, ILogger<BookService> logger)
         {
             _dataService = dataService;
             _bookRepository = _dataService.Book;
             _validator = validator;
+            _logger = logger;
         }
 
         public async Task CreateBookAsync(CreateOrUpdateBookDto model)
         {
-            await _validator.ValidateAndThrowAsync(model);
+            var validation = await _validator.ValidateAsync(model);
+            if (!validation.IsValid)
+            {
+                var exception = new ValidationException(validation.Errors);
+                _logger.LogError(exception, $"Validation failed: {model.Name}");
+                throw exception;
+            }
 
             Book book = new Book
             {
@@ -33,22 +41,25 @@ namespace MongoDb.Service.Services
             };
 
             await _bookRepository.CreateBookAsync(book);
+            _logger.LogInformation($"Created: {model.Name}");
         }
 
         public async Task DeleteBookAsync(string bookId)
         {
             var book = await _bookRepository.GetBookByIdAsync(bookId);
             if (book == null)
-                throw new KeyNotFoundException($"Book is null - id: {bookId}");
+                ThrowAndLogKeyNotFoundException(bookId);
 
             await _bookRepository.DeleteBookAsync(book.Id);
+            _logger.LogInformation($"Deleted: {bookId}");
         }
 
         public IEnumerable<Book> GetAllBooksAsync()
         {
             var books = _bookRepository.GetAll();
             if (books.Count() == 0)
-                throw new KeyNotFoundException("No records in database");
+                ThrowAndLogKeyNotFoundException();
+            _logger.LogInformation("Books found", books);
             return books;
         }
 
@@ -56,9 +67,9 @@ namespace MongoDb.Service.Services
         {
             var book = await _bookRepository.GetBookByIdAsync(bookId);
             if (book == null)
-                throw new KeyNotFoundException($"Book is null - id: {bookId}");
+                ThrowAndLogKeyNotFoundException(bookId);
 
-            Log.Information($"Book Id found", book);
+            _logger.LogInformation($"Book Id found", book);
             return book;
         }
 
@@ -66,7 +77,7 @@ namespace MongoDb.Service.Services
         {
             var book = await _bookRepository.GetBookByIdAsync(bookId);
             if (book == null)
-                throw new KeyNotFoundException($"Book is null - id: {bookId}");
+                ThrowAndLogKeyNotFoundException(bookId);
 
             await _validator.ValidateAndThrowAsync(model);
 
@@ -79,6 +90,21 @@ namespace MongoDb.Service.Services
                 Price = model.Price
             };
             await _bookRepository.UpdateBookAsync(bookId, bookUpdate);
+            _logger.LogInformation("Book updated", bookUpdate);
+        }
+
+        private void ThrowAndLogKeyNotFoundException(string bookId)
+        {
+            var exception = new KeyNotFoundException($"Book is null - id: {bookId}");
+            _logger.LogError(exception, $"BookId {bookId} not found");
+            throw exception;
+        }
+
+        private void ThrowAndLogKeyNotFoundException()
+        {
+            var exception = new KeyNotFoundException("No records in database");
+            _logger.LogError(exception, "No records in database");
+            throw exception;
         }
     }
 }

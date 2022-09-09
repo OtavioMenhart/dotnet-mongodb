@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MongoDb/MongoDb.Application.csproj", "MongoDb.Application/"]
-RUN dotnet restore "MongoDb/MongoDb.Application.csproj"
+COPY ["MongoDb.Application/MongoDb.Application.csproj", "MongoDb.Application/"]
+RUN dotnet restore "MongoDb.Application/MongoDb.Application.csproj"
 COPY . .
-WORKDIR "/src/MongoDb"
+WORKDIR "/src/MongoDb.Application"
 RUN dotnet build "MongoDb.Application.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -19,4 +19,4 @@ RUN dotnet publish "MongoDb.Application.csproj" -c Release -o /app/publish /p:Us
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MongoDb.dll"]
+ENTRYPOINT ["dotnet", "MongoDb.Application.dll"]

@@ -16,8 +16,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<DatabaseSettings>(
-        builder.Configuration.GetSection("MongoConnection"));
+string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment}.json", optional: true)
+    .Build();
+
+builder.Services.Configure<DatabaseSettings>(configuration.GetSection("MongoConnection"));
 
 builder.Services.AddSingleton<MongoDbContext>();
 
@@ -26,7 +31,7 @@ builder.Services.AddSingleton<IValidator<CreateOrUpdateBookDto>, CreateOrUpdateB
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddTransient<IBookService, BookService>();
 
-LogConfiguration.ConfigureLogging();
+LogConfiguration.ConfigureLogging(configuration);
 builder.Host.UseSerilog();
 
 var app = builder.Build();
